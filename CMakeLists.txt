@@ -7,10 +7,16 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
 
-find_package(ament_cmake REQUIRED)
-
 # Prefer OpenGL neutral dispatch
 set(OpenGL_GL_PREFERENCE GLVND)
+
+find_package(ament_cmake REQUIRED)
+
+# ==============================================
+# Dependencies
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+    imgui
+)
 
 find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -19,6 +25,7 @@ find_package(imgui REQUIRED)
 
 add_library(implot SHARED
     implot/implot.cpp
+    implot/implot_demo.cpp
     implot/implot_items.cpp)
 
 target_include_directories(implot PUBLIC
@@ -27,11 +34,11 @@ target_include_directories(implot PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/implot/backends>
     $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(implot PUBLIC glfw OpenGL::GL GLEW::GLEW imgui)
+ament_target_dependencies(
+    implot
+  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
 ament_export_targets(export_implot HAS_LIBRARY_TARGET)
-
-add_executable(implot_example src/implot_demo.cpp)
-target_link_libraries(implot_example PRIVATE implot)
 
 ament_export_include_directories(include)
 ament_export_libraries(implot)
@@ -43,12 +50,6 @@ install(FILES
   DESTINATION include)
 
 install(TARGETS implot EXPORT export_implot
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
-
-install(TARGETS implot_example
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
