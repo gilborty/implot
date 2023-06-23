@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>implot</name>
+  <version>0.1.0</version>
+  <description>Implot package for ROS2 integration</description>
+  <maintainer email="gilbert@missionrobotics.us">gilborty</maintainer>
+  <url type="repository">https://github.com/gilborty/implot</url>
+
+  <license>MIT License</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>libglfw3-dev</depend>
+  <depend>libglew-dev</depend>
+  <depend>imgui</depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>
